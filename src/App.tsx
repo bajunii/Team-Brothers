@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './App.css';
 import emailjs from '@emailjs/browser';
