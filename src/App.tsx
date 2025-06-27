@@ -103,10 +103,10 @@ const App = () => {
 
     if (formRef.current) {
       emailjs.sendForm(
-        'service_x1ohjby',    // Replace with your EmailJS service ID
-        'template_5n3i97j',   // Replace with your EmailJS template ID
+        'service_lsim47y',    // Replace with your EmailJS service ID
+        'template_qbmbfqw',   // Replace with your EmailJS template ID
         formRef.current,
-        'BUbFTx8yrfr9UaX0r'     // Replace with your EmailJS public key
+        'LRSiR4oxzz-NIgcS6'     // Replace with your EmailJS public key
       )
       .then(() => {
         alert(
@@ -420,7 +420,7 @@ const App = () => {
                   className="checkout"
                   id="checkout-btn"
                   aria-label="Proceed to checkout"
-                  href="https://store.pesapal.com/teambrothers"
+                  href="https://paystack.shop/pay/gd98qgypm4"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
