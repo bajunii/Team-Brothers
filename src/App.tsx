@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './App.css';
 import emailjs from '@emailjs/browser';
@@ -16,6 +16,9 @@ interface CartItem {
 const App = () => {
   // Navigation state
   const [activeLink, setActiveLink] = useState('hero');
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // const toggleMenu = () => setMenuOpen(open => !open);
 
   // Shop state
   const products: Product[] = [
@@ -167,21 +170,36 @@ const App = () => {
     if (handler) handler.openIframe();
   };
 
+  // Toggle mobile menu
+  const toggleMenu = () => {
+    setMenuOpen(prev => !prev);
+  };
+
   return (
     <div className="App">
       <header>
         <div className="logo-container">
           <img src="/LOGO/brand logo.png" alt="Team Brothers Logo" />
           <h1>Team Brothers</h1>
+          <button
+            className="hamburger"
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+            onClick={toggleMenu}
+          >
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+          </button>
         </div>
-        <nav aria-label="Primary navigation">
+        <nav aria-label="Primary navigation" className={menuOpen ? 'open' : ''}>
           <ul>
-            <li><a href="#hero" className={activeLink === 'hero' ? 'active' : ''} onClick={(e) => handleNavClick('hero', e)}>Home</a></li>
-            <li><a href="#artists" className={activeLink === 'artists' ? 'active' : ''} onClick={(e) => handleNavClick('artists', e)}>Artists</a></li>
-            <li><a href="#nasheed" className={activeLink === 'nasheed' ? 'active' : ''} onClick={(e) => handleNavClick('nasheed', e)}>Nasheed Audios</a></li>
-            <li><a href="#gallery" className={activeLink === 'gallery' ? 'active' : ''} onClick={(e) => handleNavClick('gallery', e)}>Gallery</a></li>
-            <li><a href="#shop" className={activeLink === 'shop' ? 'active' : ''} onClick={(e) => handleNavClick('shop', e)}>Shop</a></li>
-            <li><a href="#booking" className={activeLink === 'booking' ? 'active' : ''} onClick={(e) => handleNavClick('booking', e)}>Booking</a></li>
+            <li><a href="#hero" className={activeLink === 'hero' ? 'active' : ''} onClick={(e) => {handleNavClick('hero', e); setMenuOpen(false);}}>Home</a></li>
+            <li><a href="#artists" className={activeLink === 'artists' ? 'active' : ''} onClick={(e) => {handleNavClick('artists', e); setMenuOpen(false);}}>Artists</a></li>
+            <li><a href="#nasheed" className={activeLink === 'nasheed' ? 'active' : ''} onClick={(e) => {handleNavClick('nasheed', e); setMenuOpen(false);}}>Nasheed Audios</a></li>
+            <li><a href="#gallery" className={activeLink === 'gallery' ? 'active' : ''} onClick={(e) => {handleNavClick('gallery', e); setMenuOpen(false);}}>Gallery</a></li>
+            <li><a href="#shop" className={activeLink === 'shop' ? 'active' : ''} onClick={(e) => {handleNavClick('shop', e); setMenuOpen(false);}}>Shop</a></li>
+            <li><a href="#booking" className={activeLink === 'booking' ? 'active' : ''} onClick={(e) => {handleNavClick('booking', e); setMenuOpen(false);}}>Booking</a></li>
           </ul>
         </nav>
       </header>
