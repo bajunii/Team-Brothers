@@ -138,6 +138,35 @@ const App = () => {
     }, 0);
   };
 
+  const handlePaystackPayment = () => {
+    const email = bookingData.email || "customer@email.com"; // Use booking email or a default
+    const amount = calculateTotal() * 100; // Paystack expects amount in kobo (for KES, use cents)
+    const paystackPublicKey = "pk_live_caef9cf0132fd4216c72829f8b80a1c6b4483990"; // Replace with your Paystack public key
+
+    if (amount === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    // @ts-ignore
+    const handler = window.PaystackPop && window.PaystackPop.setup({
+      key: paystackPublicKey,
+      email: email,
+      amount: amount,
+      currency: "KES",
+      ref: '' + Math.floor(Math.random() * 1000000000 + 1), // Generate a random reference
+      callback: function(response: any) {
+        alert('Payment complete! Reference: ' + response.reference);
+        setCart({}); // Optionally clear cart after payment
+      },
+      onClose: function() {
+        alert('Payment window closed.');
+      }
+    });
+
+    if (handler) handler.openIframe();
+  };
+
   return (
     <div className="App">
       <header>
@@ -416,16 +445,15 @@ const App = () => {
                 <button className="clear-cart" id="clear-cart-btn" aria-label="Clear shopping cart" onClick={clearCart}>
                   Clear Cart
                 </button>
-                <a
+                <button
                   className="checkout"
                   id="checkout-btn"
                   aria-label="Proceed to checkout"
-                  href="https://paystack.shop/pay/gd98qgypm4"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  type="button"
+                  onClick={handlePaystackPayment}
                 >
                   Proceed to Checkout
-                </a>
+                </button>
               </>
             )}
           </section>
@@ -541,6 +569,8 @@ const App = () => {
         </div>
         <p>&copy; {new Date().getFullYear()} Team Brothers. All rights reserved.</p>
       </footer>
+
+      
     </div>
   );
 };
