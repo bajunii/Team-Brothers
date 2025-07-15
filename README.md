@@ -1,55 +1,51 @@
-# React + TypeScript + Vite
+# Team Brothers Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+The Team Brothers project is a web application designed to showcase the Team Brothers Islamic Nasheed Label. It features sections for artists, nasheed audios, a gallery, an online shop, and an event booking form. Additionally, it includes a floating WhatsApp chat feature for easy communication with users.
 
-Currently, two official plugins are available:
+## Features
+- **Responsive Navigation**: Smooth scrolling navigation to different sections of the page.
+- **Product Shop**: Users can view and purchase products such as t-shirts and hoodies.
+- **Event Booking**: A form for users to book events with the Team Brothers.
+- **Floating WhatsApp Chat**: A convenient chat feature that allows users to contact the Team Brothers directly via WhatsApp.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/Team-brothers.git
+   ```
+2. Navigate to the project directory:
+   ```
+   cd Team-brothers
+   ```
+3. Install the dependencies:
+   ```
+   npm install
+   ```
 
-## Expanding the ESLint configuration
+## Usage
+1. Start the development server:
+   ```
+   npm start
+   ```
+2. Open your browser and go to `http://localhost:5173/` to view the application.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## File Structure
+```
+Team-brothers
+├── src
+│   ├── App.tsx           # Main application component
+│   ├── FloatingWhatsApp.tsx # Floating WhatsApp chat component
+│   ├── App.css           # Styles for the application
+│   └── types
+│       └── index.ts      # TypeScript types and interfaces
+├── package.json          # npm configuration file
+├── tsconfig.json         # TypeScript configuration file
+└── README.md             # Project documentation
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-"# Team-Brothers" 
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
