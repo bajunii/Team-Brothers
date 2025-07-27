@@ -47,6 +47,59 @@ const App = () => {
     eventDetails: ''
   });
 
+  // Form validation state
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+
+  // Check if form is valid
+  const isFormValid = () => {
+    return (
+      bookingData.fullName.trim() !== '' &&
+      bookingData.email.trim() !== '' &&
+      bookingData.phone.trim() !== '' &&
+      bookingData.eventDate !== '' &&
+      bookingData.eventTime !== '' &&
+      bookingData.eventDetails.trim() !== '' &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bookingData.email) &&
+      /^[\+]?[0-9\s\-]{7,15}$/.test(bookingData.phone.trim())
+    );
+  };
+
+  // Validate individual fields
+  const validateField = (name: string, value: string) => {
+    let error = '';
+    
+    switch (name) {
+      case 'fullName':
+        if (!value.trim()) error = 'Full name is required';
+        break;
+      case 'email':
+        if (!value.trim()) {
+          error = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          error = 'Please enter a valid email address';
+        }
+        break;
+      case 'phone':
+        if (!value.trim()) {
+          error = 'Phone number is required';
+        } else if (!/^[\+]?[0-9\s\-]{7,15}$/.test(value.trim())) {
+          error = 'Please enter a valid phone number';
+        }
+        break;
+      case 'eventDate':
+        if (!value) error = 'Event date is required';
+        break;
+      case 'eventTime':
+        if (!value) error = 'Event time is required';
+        break;
+      case 'eventDetails':
+        if (!value.trim()) error = 'Event details are required';
+        break;
+    }
+    
+    return error;
+  };
+
   // Add a ref for the form
   const formRef = React.useRef<HTMLFormElement>(null);
 
@@ -99,11 +152,45 @@ const App = () => {
       ...prev,
       [name]: value
     }));
+
+    // Clear error for this field when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+
+    // Validate field on blur for better UX
+    const error = validateField(name, value);
+    if (error && value.trim() !== '') {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: error
+      }));
+    }
   };
 
   // Handle booking form submission
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate all fields
+    const newErrors: { [key: string]: string } = {};
+    Object.keys(bookingData).forEach(key => {
+      const error = validateField(key, bookingData[key as keyof typeof bookingData]);
+      if (error) {
+        newErrors[key] = error;
+      }
+    });
+
+    setFormErrors(newErrors);
+
+    // Don't submit if there are errors
+    if (Object.keys(newErrors).length > 0) {
+      alert('Please fill in all required fields correctly before submitting.');
+      return;
+    }
 
     if (formRef.current) {
       emailjs.sendForm(
@@ -124,6 +211,7 @@ const App = () => {
           eventTime: '',
           eventDetails: ''
         });
+        setFormErrors({});
       }, (error) => {
         alert('Failed to send booking. Please try again later.');
         console.error(error);
@@ -497,7 +585,11 @@ const App = () => {
                 autoComplete="name"
                 value={bookingData.fullName}
                 onChange={handleBookingChange}
+                style={{
+                  borderColor: formErrors.fullName ? '#e74c3c' : undefined
+                }}
               />
+              {formErrors.fullName && <span style={{ color: '#e74c3c', fontSize: '0.9rem' }}>{formErrors.fullName}</span>}
             </div>
             <div>
               <label htmlFor="email">Email Address *</label>
@@ -510,7 +602,11 @@ const App = () => {
                 autoComplete="email"
                 value={bookingData.email}
                 onChange={handleBookingChange}
+                style={{
+                  borderColor: formErrors.email ? '#e74c3c' : undefined
+                }}
               />
+              {formErrors.email && <span style={{ color: '#e74c3c', fontSize: '0.9rem' }}>{formErrors.email}</span>}
             </div>
             <div>
               <label htmlFor="phone">Phone Number *</label>
@@ -525,7 +621,11 @@ const App = () => {
                 autoComplete="tel"
                 value={bookingData.phone}
                 onChange={handleBookingChange}
+                style={{
+                  borderColor: formErrors.phone ? '#e74c3c' : undefined
+                }}
               />
+              {formErrors.phone && <span style={{ color: '#e74c3c', fontSize: '0.9rem' }}>{formErrors.phone}</span>}
             </div>
             <div>
               <label htmlFor="eventDate">Event Date *</label>
@@ -537,7 +637,11 @@ const App = () => {
                 aria-required="true"
                 value={bookingData.eventDate}
                 onChange={handleBookingChange}
+                style={{
+                  borderColor: formErrors.eventDate ? '#e74c3c' : undefined
+                }}
               />
+              {formErrors.eventDate && <span style={{ color: '#e74c3c', fontSize: '0.9rem' }}>{formErrors.eventDate}</span>}
             </div>
             <div>
               <label htmlFor="eventTime">Event Time *</label>
@@ -549,7 +653,11 @@ const App = () => {
                 aria-required="true"
                 value={bookingData.eventTime}
                 onChange={handleBookingChange}
+                style={{
+                  borderColor: formErrors.eventTime ? '#e74c3c' : undefined
+                }}
               />
+              {formErrors.eventTime && <span style={{ color: '#e74c3c', fontSize: '0.9rem' }}>{formErrors.eventTime}</span>}
             </div>
             <div>
               <label htmlFor="eventDetails">Event Details *</label>
@@ -561,9 +669,22 @@ const App = () => {
                 placeholder="Describe your event..."
                 value={bookingData.eventDetails}
                 onChange={handleBookingChange}
+                style={{
+                  borderColor: formErrors.eventDetails ? '#e74c3c' : undefined
+                }}
               ></textarea>
+              {formErrors.eventDetails && <span style={{ color: '#e74c3c', fontSize: '0.9rem' }}>{formErrors.eventDetails}</span>}
             </div>
-            <button type="submit" className="book-submit" aria-label="Submit booking form">
+            <button 
+              type="submit" 
+              className="book-submit" 
+              aria-label="Submit booking form"
+              disabled={!isFormValid()}
+              style={{
+                opacity: isFormValid() ? 1 : 0.6,
+                cursor: isFormValid() ? 'pointer' : 'not-allowed'
+              }}
+            >
               Submit Booking
             </button>
           </form>
