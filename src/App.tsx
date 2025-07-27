@@ -264,6 +264,28 @@ const App = () => {
     setMenuOpen(prev => !prev);
   };
 
+  // Close menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const nav = document.querySelector('nav');
+      const hamburger = document.querySelector('.hamburger');
+      
+      if (menuOpen && nav && hamburger && 
+          !nav.contains(event.target as Node) && 
+          !hamburger.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
+
   return (
     <div className="App">
       <header>
@@ -271,7 +293,7 @@ const App = () => {
           <img src="/LOGO/brand logo.png" alt="Team Brothers Logo" />
           <h1>Team Brothers</h1>
           <button
-            className="hamburger"
+            className={`hamburger ${menuOpen ? 'open' : ''}`}
             aria-label="Toggle navigation menu"
             aria-expanded={menuOpen}
             onClick={toggleMenu}
