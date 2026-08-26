@@ -31,6 +31,11 @@ a {
   transition: color 0.3s ease;
 }
 
+img {
+  max-width: 100%;
+  display: block;
+}
+
 a:hover, a:focus {
   color: #f3bc07;
   outline: none;
@@ -60,9 +65,9 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: static;
+  position: relative;
   top: 0;
-  z-index: 999;
+  z-index: 50;
   flex-wrap: wrap;
 }
 
@@ -70,6 +75,14 @@ header {
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-width: 0;
+}
+
+.logo-container img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .logo {
@@ -128,6 +141,7 @@ nav li a:focus {
 /* Hero Section */
 #hero {
   position: relative;
+  z-index: 1;
   background: url('/images/web page.jpg') no-repeat center center/cover;
   height: 450px;
   display: flex;
@@ -709,6 +723,23 @@ footer .socials a:focus {
 
 /* Hamburger visible on mobile */
 @media (max-width: 900px) {
+  header {
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .logo-container {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .logo-container h1 {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
   .hamburger {
     display: flex;
   }
@@ -721,7 +752,7 @@ footer .socials a:focus {
     max-height: 350px;
     background: rgba(18, 18, 18, 0.98);
     transition: right 0.3s ease;
-    z-index: 1000;
+    z-index: 200;
     backdrop-filter: saturate(180%) blur(15px);
     -webkit-backdrop-filter: saturate(180%) blur(15px);
     box-shadow: -2px 4px 15px rgba(0,0,0,0.5);
@@ -731,6 +762,7 @@ footer .socials a:focus {
   }
   nav.open {
     right: 0;
+    z-index: 200;
   }
   nav ul {
     flex-direction: column;
@@ -839,8 +871,14 @@ footer .socials a:focus {
     gap: 0.75rem;
     text-align: center;
   }
+
+  .audio-title {
+    width: 100%;
+    word-break: break-word;
+  }
   
   audio {
+    width: 100%;
     max-width: 100%;
   }
 }
@@ -907,8 +945,13 @@ footer .socials a:focus {
     margin: 2rem 0.75rem;
     padding: 1.5rem;
   }
+
+  form > div {
+    min-width: 0;
+  }
   
   input, textarea {
+    width: 100%;
     font-size: 1rem;
   }
   
